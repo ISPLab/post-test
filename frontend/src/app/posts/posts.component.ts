@@ -61,11 +61,12 @@ import { Post } from './post.interface';
           caption="Actions"
           [allowFiltering]="false">
           <dxi-button
+            name="delete"
             hint="Delete"
             icon="trash"
             [visible]="true"
             stylingMode="text"
-            (onClick)="onDeleteClick($event)">
+            [onClick]="onDeleteClick">
           </dxi-button>
         </dxi-column>
 
@@ -83,7 +84,6 @@ import { Post } from './post.interface';
         [showCloseButton]="false"
         [showTitle]="true"
         title="Confirm Delete"
-        container=".dx-viewport"
         width="300"
         height="auto"
         class="dark:bg-gray-800">
@@ -228,6 +228,7 @@ export class PostsComponent implements OnInit {
   }
 
   onDeleteClick = (e: any) => {
+    console.log(e);
     this.postToDelete = e.row.data.id;
     this.isDeleteConfirmationVisible = true;
     e.event.preventDefault();
