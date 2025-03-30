@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+@layer base {
+  body {
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+  }
+}
+
+/* DevExpress customization for dark mode */
+:root {
+  --dx-datagrid-base-color: theme('colors.gray.900');
+  --dx-datagrid-border-color: theme('colors.gray.700');
+}
+
+.dark {
+  --dx-datagrid-base-color: theme('colors.gray.100');
+  --dx-datagrid-border-color: theme('colors.gray.600');
+} 

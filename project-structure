@@ -1,0 +1,11 @@
+fullstack-test/
+├── frontend/
+│   ├── src/
+│   ├── Dockerfile
+│   └── nginx.conf
+├── backend/
+│   ├── src/
+│   ├── test/
+│   └── Dockerfile
+├── docker-compose.yml
+└── README.md 
