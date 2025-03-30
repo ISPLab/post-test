@@ -5,11 +5,24 @@ import { Post } from './post.interface';
 @Component({
   selector: 'app-posts',
   template: `
-    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+    <div class="max-w-7xl mx-auto overflow-hidden bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+      <!-- Add Post Button -->
+      <div class="mb-4">
+        <dx-button
+          text="Create Post"
+          type="default"
+          icon="plus"
+          (click)="showCreatePostPopup()"
+          class="dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700">
+        </dx-button>
+      </div>
+
+      <!-- DataGrid -->
       <dx-data-grid
         [dataSource]="posts"
         [showBorders]="true"
-        [columnAutoWidth]="true"
+        [columnAutoWidth]="false"
+        [width]="'100%'"
         [rowAlternationEnabled]="true"
         [showColumnLines]="true"
         [showRowLines]="true"
@@ -36,7 +49,8 @@ import { Post } from './post.interface';
         <dxi-column 
           dataField="id" 
           caption="ID" 
-          width="100"
+          [width]="80"
+          alignment="center"
           [allowFiltering]="false"
           class="dark:text-gray-200">
         </dxi-column>
@@ -44,6 +58,7 @@ import { Post } from './post.interface';
         <dxi-column 
           dataField="title" 
           caption="Title"
+          [width]="300"
           [allowFiltering]="true"
           class="dark:text-gray-200">
         </dxi-column>
@@ -57,8 +72,9 @@ import { Post } from './post.interface';
         
         <dxi-column 
           type="buttons" 
-          width="100"
+          [width]="100"
           caption="Actions"
+          alignment="center"
           [allowFiltering]="false">
           <dxi-button
             name="delete"
@@ -75,6 +91,58 @@ import { Post } from './post.interface';
           class="dark:bg-gray-700">
         </dxo-filter-row>
       </dx-data-grid>
+
+      <!-- Create Post Popup -->
+      <dx-popup
+        [(visible)]="isCreatePopupVisible"
+        [dragEnabled]="false"
+        [hideOnOutsideClick]="true"
+        [showTitle]="true"
+        title="Create New Post"
+        width="600"
+        height="auto"
+        class="dark:bg-gray-800">
+        <div class="p-4">
+          <form (submit)="createPost($event)">
+            <dx-form
+              [(formData)]="newPost"
+              [colCount]="1"
+              [showValidationSummary]="true">
+              
+              <dxi-item dataField="title" 
+                [isRequired]="true"
+                [editorOptions]="{ 
+                  stylingMode: 'filled',
+                  labelMode: 'floating',
+                  class: 'dark:bg-gray-700 dark:text-gray-200' 
+                }">
+              </dxi-item>
+
+              <dxi-item dataField="body"
+                editorType="dxTextArea"
+                [isRequired]="true"
+                [editorOptions]="{ 
+                  height: 140,
+                  stylingMode: 'filled',
+                  labelMode: 'floating',
+                  class: 'dark:bg-gray-700 dark:text-gray-200' 
+                }">
+              </dxi-item>
+
+              <dxi-item 
+                itemType="button"
+                horizontalAlignment="right"
+                [buttonOptions]="{
+                  text: 'Create',
+                  type: 'default',
+                  useSubmitBehavior: true,
+                  class: 'dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700'
+                }">
+              </dxi-item>
+            </dx-form>
+          </form>
+        </div>
+      </dx-popup>
 
       <!-- Delete Confirmation Popup -->
       <dx-popup
@@ -112,6 +180,8 @@ import { Post } from './post.interface';
     :host {
       display: block;
       margin: 20px 0;
+      max-width: 100%;
+      overflow-x: auto;
     }
 
     ::ng-deep .dx-datagrid {
@@ -206,12 +276,35 @@ import { Post } from './post.interface';
     ::ng-deep .dx-button-danger.dx-state-hover {
       @apply dark:bg-red-700;
     }
+
+    ::ng-deep .dx-texteditor.dx-editor-filled {
+      @apply dark:bg-gray-700 dark:border-gray-600;
+    }
+
+    ::ng-deep .dx-texteditor.dx-editor-filled .dx-texteditor-input {
+      @apply dark:bg-gray-700 dark:text-gray-200;
+    }
+
+    ::ng-deep .dx-texteditor.dx-editor-filled .dx-placeholder {
+      @apply dark:text-gray-400;
+    }
+
+    ::ng-deep .dx-form .dx-field-item-label-text {
+      @apply dark:text-gray-200;
+    }
   `]
 })
 export class PostsComponent implements OnInit {
   posts: Post[] = [];
   isDeleteConfirmationVisible = false;
+  isCreatePopupVisible = false;
   postToDelete: number | null = null;
+  
+  newPost = {
+    title: '',
+    body: '',
+    userId: 1 // Default user ID
+  };
 
   constructor(private postsService: PostsService) {}
 
@@ -250,6 +343,30 @@ export class PostsComponent implements OnInit {
         error: (error) => {
           console.error('Error deleting post:', error);
           // You might want to show an error message to the user here
+        }
+      });
+    }
+  }
+
+  showCreatePostPopup() {
+    this.newPost = {
+      title: '',
+      body: '',
+      userId: 1
+    };
+    this.isCreatePopupVisible = true;
+  }
+
+  createPost(e: Event) {
+    e.preventDefault();
+    if (this.newPost.title && this.newPost.body) {
+      this.postsService.createPost(this.newPost).subscribe({
+        next: () => {
+          this.loadPosts();
+          this.isCreatePopupVisible = false;
+        },
+        error: (error) => {
+          console.error('Error creating post:', error);
         }
       });
     }

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { DxDataGridModule, DxButtonModule, DxPopupModule, DxFormModule } from 'devextreme-angular';
+import { DxDataGridModule, DxButtonModule, DxPopupModule, DxFormModule, DxTextAreaModule, DxTextBoxModule } from 'devextreme-angular';
 import { AppComponent } from './app.component';
 import { PostsComponent } from './posts/posts.component';
 import { PostsService } from './posts/posts.service';
@@ -17,7 +17,9 @@ import { PostsService } from './posts/posts.service';
     DxDataGridModule,
     DxButtonModule,
     DxPopupModule,
-    DxFormModule
+    DxFormModule,
+    DxTextAreaModule,
+    DxTextBoxModule
   ],
   providers: [PostsService],
   bootstrap: [AppComponent]
