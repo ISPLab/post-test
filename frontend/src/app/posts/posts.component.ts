@@ -10,8 +10,11 @@ import { Post } from './post.interface';
       <div class="mb-4">
         <dx-button
           text="Create Post"
-          type="default"
+          type="success"
           icon="plus"
+          stylingMode="contained"
+          width="auto"
+          height="40"
           (click)="showCreatePostPopup()"
           class="dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700">
         </dx-button>
