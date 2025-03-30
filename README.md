@@ -1,3 +1,19 @@
+# Full-stack Developer Test Task
+
+## Screenshots
+
+### Posts Management Interface
+![Posts Management](./screenshots/posts-management.png)
+*Main interface showing the posts grid with CRUD capabilities*
+
+### Create Post Form
+![Create Post](./screenshots/create-post.png)
+*Form for creating new posts with validation*
+
+### Delete Confirmation
+![Delete Confirmation](./screenshots/delete-confirmation.png)
+*Confirmation dialog when deleting posts*
+
 This setup provides:
 1. A NestJS backend with:
 CRUD operations for posts
@@ -43,3 +59,21 @@ npm run build
 4. To run tests:
 npm test
 These configurations are designed to streamline the development process and ensure a smooth deployment experience.  
+
+## Environment Requirements
+
+- Node.js 18+
+- npm 8+
+- Docker and Docker Compose (for containerized deployment)
+
+## Notes
+
+- The backend integrates with JSONPlaceholder API for demonstration purposes
+- Frontend includes dark mode styling for all components
+- DevExpress DataGrid includes features like:
+  - Sorting
+  - Filtering
+  - Pagination
+  - Responsive layout
+  - Custom column widths
+  - Action buttons  
